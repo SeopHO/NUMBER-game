@@ -1,4 +1,6 @@
-window.addEventListener("onload",loadValue);
+const numberText = document.getElementById("numberText");
+const recordText = document.getElementById("recordText");
+
 window.addEventListener("keydown",keyhandler);
 
 const Gsystem={
@@ -6,23 +8,6 @@ const Gsystem={
     victCnt:0,
     code_left:"ArrowLeft",
     code_right:"ArrowRight",
-}
-
-function init(cnt)
-{
-    
-}
-
-function check(code,num)
-{
-    if(code === Gsystem.code_left)
-    {
-        
-    }
-    if(code === Gsystem.code_right)
-    {
-
-    }
 }
 
 function innerT(element,text,code)
@@ -38,11 +23,48 @@ function innerT(element,text,code)
 
 }
 
-function loadValue()
+function init(cnt=0)
 {
-    const numberText = document.getElementById("numberText");
-    const victCtnText = document.getElementById("recordText");
+    Gsystem.num = 0;
+    Gsystem.victCnt=cnt;
+
+    innerT(numberText,0,1);
+    innerT(recordText,cnt,0);
 }
+
+function check(code,num)
+{
+    switch(code)
+    {
+        case Gsystem.code_left:
+            if(num>21 || num === 21)
+            {
+                //fail!
+                console.log('실패');
+                init();
+                
+            }
+            break;
+        
+        case Gsystem.code_right:
+            if(num>21 || num === 21)
+            {
+                //victory!
+                console.log('성공');
+                Gsystem.victCnt++;
+                init(Gsystem.victCnt);
+            }
+            if(num<21)
+            {
+                console.log('실패');
+                init();
+            }
+            break;
+    }
+}
+
+
+
 
 function sum()
 {
@@ -62,15 +84,15 @@ function keyhandler(e)
 {
     if(e.code === Gsystem.code_left)
     {
-        console.log(randomhandler());
         innerT(numberText,sum(),1);
-        console.log(numberText.innerText);
-        
+        check(e.code,numberText.innerText);
     }
 
     if(e.code === Gsystem.code_right)
     {
-        console.log(randomhandler());
         innerT(numberText,sum(),1);
+        check(e.code,numberText.innerText);
     }
 }
+
+init();
