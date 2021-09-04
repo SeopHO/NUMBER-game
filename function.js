@@ -1,6 +1,8 @@
 const numberText = document.getElementById("numberText");
 const recordText = document.getElementById("recordText");
+
 const resultText = document.getElementById("resultText");
+const resultArea = document.querySelector(".result-Area");
 
 window.addEventListener("keydown",keydownhandler);
 window.addEventListener("keyup",keyuphandler);
@@ -12,6 +14,15 @@ const gsystem={
     code_right:"ArrowRight",
     keyControll:null,
     gstate:null,
+
+    contain_color:'#F4DFD0',
+    vict_color:'#4FFF63',
+    fail_color:'#FF3F3F',
+}
+
+const color_code_1={
+    background:'#E7E0C9',
+    
 }
 
 function innerT(element,text,code)
@@ -33,6 +44,11 @@ function init(cnt=0)
     gsystem.victCnt=cnt;
     gsystem.gstate='START';
 
+    resultArea.style.backgroundColor=gsystem.contain_color;
+    resultText.innerText = " ";
+
+    innerT(numberText,0,1);
+    innerT(recordText,cnt,0);
 
 }
 
@@ -44,7 +60,6 @@ function check(code,num)
             if(num>=21)
             {
                 //fail
-                console.log('실패');
                 gsystem.gstate = 'STOP';
                 console.log(gsystem.gstate);
                 stop();
@@ -55,18 +70,16 @@ function check(code,num)
             if(num>=21)
             {
                 //victory
-                console.log('성공');
                 gsystem.victCnt++;
-                console.log(gsystem.keyControll);
-
-                init(gsystem.victCnt);
+                stop();
+                result(1);
             }
             if(num<21)
             {
                 //fail
-                console.log('실패');
-                console.log(gsystem.keyControll);
-                init();     
+                stop();
+                result(0);     
+                init();
             }
             break;
     }
@@ -85,11 +98,17 @@ function result(code)
 { 
     if(code)
     {
-        numberText.style.color='green';
+        numberText.style.color=gsystem.vict_color;
+
+        resultText.innerText = "승리!";
+        resultArea.style.backgroundColor=gsystem.vict_color;
     }
     else
     {
-        numberText.style.color='red';
+        numberText.style.color=gsystem.fail_color;
+
+        resultText.innerText = "패배";
+        resultArea.style.backgroundColor=gsystem.fail_color;
     }
 }
 
