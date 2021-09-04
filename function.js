@@ -1,30 +1,27 @@
 const numberText = document.getElementById("numberText");
 const recordText = document.getElementById("recordText");
-
 const resultText = document.getElementById("resultText");
 const resultArea = document.querySelector(".result-Area");
-
 window.addEventListener("keydown",keydownhandler);
 window.addEventListener("keyup",keyuphandler);
-
 const gsystem={
+    randMax:8,
     num:0,
     victCnt:0,
     code_left:"ArrowLeft",  
     code_right:"ArrowRight",
     keyControll:null,
+    nextControll:null,
     gstate:null,
 
+    number_color:'#DAD0C2',
     contain_color:'#F4DFD0',
     vict_color:'#4FFF63',
     fail_color:'#FF3F3F',
 }
-
 const color_code_1={
-    background:'#E7E0C9',
-    
+    background:'#E7E0C9', 
 }
-
 function innerT(element,text,code)
 {
     if(code)
@@ -36,7 +33,6 @@ function innerT(element,text,code)
         element.innerText = `${text} winning`;
     }
 }
-
 function init(cnt=0)
 {
     gsystem.keyControll = 0;
@@ -44,14 +40,16 @@ function init(cnt=0)
     gsystem.victCnt=cnt;
     gsystem.gstate='START';
 
+    gsystem.nextControll = false;
+
+    numberText.style.color=gsystem.number_color;
+
     resultArea.style.backgroundColor=gsystem.contain_color;
     resultText.innerText = " ";
 
     innerT(numberText,0,1);
     innerT(recordText,cnt,0);
-
 }
-
 function check(code,num)
 {
     switch(code)
@@ -70,6 +68,7 @@ function check(code,num)
             if(num>=21)
             {
                 //victory
+                gsystem.gstate = 'STOP';
                 gsystem.victCnt++;
                 stop();
                 result(1);
@@ -77,13 +76,13 @@ function check(code,num)
             if(num<21)
             {
                 //fail
+                gsystem.gstate = 'STOP';
                 stop();
-                result(0);     
+                result(0);    
             }
             break;
     }
 }
-
 function stop()
 {
     if(gsystem.gstate === 'STOP')
@@ -92,39 +91,37 @@ function stop()
         innerT(recordText,gsystem.victCnt,0);
     }
 }
-
 function result(code)
-{ 
-    if(code)
+{
+    if(gsystem.gstate === 'STOP')
     {
-        numberText.style.color=gsystem.vict_color;
-
-        resultText.innerText = "VICTORY";
-        resultArea.style.backgroundColor=gsystem.vict_color;
-    }
-    else
-    {
-        numberText.style.color=gsystem.fail_color;
-
-        resultText.innerText = "FAIL";
-        resultArea.style.backgroundColor=gsystem.fail_color;
+        if(code)
+        {
+            numberText.style.color=gsystem.vict_color;
+    
+            resultText.innerText = "VICTORY";
+            resultArea.style.backgroundColor=gsystem.vict_color;
+        }
+        else
+        {
+            numberText.style.color=gsystem.fail_color;
+    
+            resultText.innerText = "FAIL";
+            resultArea.style.backgroundColor=gsystem.fail_color;
+        }
     }
 }
-
-
 function sum()
 {
     gsystem.num += randomhandler();
     return gsystem.num;
 }
-
 function randomhandler()
 {
     let randValue;
-    randValue = Math.floor(Math.random()*8+1);
+    randValue = Math.floor(Math.random()*gsystem.randMax+1);
     return randValue;
 }
-
 function keyuphandler(e)
 {
     if(e.code === gsystem.code_left || e.code === gsystem.code_right)
@@ -133,7 +130,6 @@ function keyuphandler(e)
         console.log(gsystem.keyControll);
     }
 }
-
 function keydownhandler(e)
 {
     if(gsystem.gstate === 'START')
@@ -149,6 +145,12 @@ function keydownhandler(e)
             }
         }
     }
+    if(gsystem.gstate === 'STOP')
+    {
+        if(e.code === gsystem.code_right || e.code === gsystem.code_left)
+        {
+            gsystem.nextControll = true;
+        }
+    }
 }
-
 init();
