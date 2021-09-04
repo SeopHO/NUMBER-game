@@ -3,14 +3,15 @@ const recordText = document.getElementById("recordText");
 const resultText = document.getElementById("resultText");
 
 window.addEventListener("keydown",keydownhandler);
-window.addEventListener("onkeyup",keyuphandler);
+window.addEventListener("keyup",keyuphandler);
 
-const Gsystem={
+const gsystem={
     num:0,
     victCnt:0,
-    code_left:"ArrowLeft",
+    code_left:"ArrowLeft",  
     code_right:"ArrowRight",
     keyControll:null,
+    gstate:null,
 }
 
 function innerT(element,text,code)
@@ -27,9 +28,10 @@ function innerT(element,text,code)
 
 function init(cnt=0)
 {
-    Gsystem.keyControll = true;
-    Gsystem.num = 0;
-    Gsystem.victCnt=cnt;
+    gsystem.keyControll = 0;
+    gsystem.num = 0;
+    gsystem.victCnt=cnt;
+    gsystem.gstate='START';
 
     innerT(numberText,0,1);
     innerT(recordText,cnt,0);
@@ -39,29 +41,29 @@ function check(code,num)
 {
     switch(code)
     {
-        case Gsystem.code_left:
+        case gsystem.code_left:
             if(num>=21)
             {
                 //fail
                 console.log('실패');
-                init();     
+                gsystem.gstate = 'STOP';
             }
             break;
-        case Gsystem.code_right:
+        case gsystem.code_right:
             if(num>=21)
             {
                 //victory
                 console.log('성공');
-                Gsystem.victCnt++;
-                console.log(Gsystem.keyControll);
+                gsystem.victCnt++;
+                console.log(gsystem.keyControll);
 
-                init(Gsystem.victCnt);
+                init(gsystem.victCnt);
             }
             if(num<21)
             {
                 //fail
                 console.log('실패');
-                    console.log(Gsystem.keyControll);
+                    console.log(gsystem.keyControll);
                     init();     
             }
             break;
@@ -70,42 +72,39 @@ function check(code,num)
 
 function sum()
 {
-    Gsystem.num += randomhandler();
-    return Gsystem.num;
+    gsystem.num += randomhandler();
+    return gsystem.num;
 }
 
 function randomhandler()
 {
     let randValue;
-    randValue = Math.floor(Math.random()*10+1);
+    randValue = Math.floor(Math.random()*8+1);
     return randValue;
 }
 
 function keyuphandler(e)
 {
-    if(e.code === Gsystem.code_left || e.code === Gsystem.code_right)
+    if(e.code === gsystem.code_left || e.code === gsystem.code_right)
     {
-        Gsystem.keyControll = false;
-        console.log(Gsystem.keyControll);
-
+        gsystem.keyControll = 0;
+        console.log(gsystem.keyControll);
     }
 }
 
 function keydownhandler(e)
 {
-    if(e.code === Gsystem.code_right || e.code === Gsystem.code_left)
+    if(e.code === gsystem.code_right || e.code === gsystem.code_left)
     {
-        Gsystem.keyControll=true;
-        if(Gsystem.keyControll === true)
+        gsystem.keyControll++;
+        if(gsystem.keyControll === 1)
         {
-            console.log(Gsystem.keyControll);
-            Gsystem.keyControll=false;
-            if(Gsystem.keyControll === false)
-            {
-                innerT(numberText,sum(),1);
-                check(e.code,numberText.innerText);
-            }
+            console.log(gsystem.keyControll);
+            innerT(numberText,sum(),1);
+            check(e.code,numberText.innerText);
         }
+
+        
     }
 }
 
