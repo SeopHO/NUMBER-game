@@ -47,6 +47,12 @@ function check(code,num)
                 //fail
                 console.log('실패');
                 gsystem.gstate = 'STOP';
+                console.log(gsystem.gstate);
+                if(gsystem.gstate === 'STOP' && gsystem.keyControll === 1)
+                {
+                    
+                }
+                
             }
             break;
         case gsystem.code_right:
