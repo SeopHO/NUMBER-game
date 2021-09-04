@@ -2,16 +2,15 @@ const numberText = document.getElementById("numberText");
 const recordText = document.getElementById("recordText");
 const resultText = document.getElementById("resultText");
 
-window.addEventListener("keydown",keyhandler);
-window.addEventListener("keyup",keyController);
+window.addEventListener("keydown",keydownhandler);
+window.addEventListener("onkeyup",keyuphandler);
 
 const Gsystem={
     num:0,
     victCnt:0,
     code_left:"ArrowLeft",
     code_right:"ArrowRight",
-    keyControll:false,
-    
+    keyControll:null,
 }
 
 function innerT(element,text,code)
@@ -24,12 +23,11 @@ function innerT(element,text,code)
     {
         element.innerText = `${text} 연승`;
     }
-
 }
 
 function init(cnt=0)
 {
-    Gsystem.keyControll = false;
+    Gsystem.keyControll = true;
     Gsystem.num = 0;
     Gsystem.victCnt=cnt;
 
@@ -44,33 +42,27 @@ function check(code,num)
         case Gsystem.code_left:
             if(num>=21)
             {
-                //fail!
+                //fail
                 console.log('실패');
-                if(Gsystem.keyControll === true)
-                {
-                    init();     
-                }
-           
+                init();     
             }
             break;
         case Gsystem.code_right:
             if(num>=21)
             {
-                //victory!
+                //victory
                 console.log('성공');
                 Gsystem.victCnt++;
-                if(Gsystem.keyControll === true)
-                {
-                    init(Gsystem.victCnt);
-                }
+                console.log(Gsystem.keyControll);
+
+                init(Gsystem.victCnt);
             }
             if(num<21)
             {
+                //fail
                 console.log('실패');
-                if(Gsystem.keyControll === true)
-                {
+                    console.log(Gsystem.keyControll);
                     init();     
-                }
             }
             break;
     }
@@ -89,35 +81,30 @@ function randomhandler()
     return randValue;
 }
 
-function keyController(e)
+function keyuphandler(e)
 {
     if(e.code === Gsystem.code_left || e.code === Gsystem.code_right)
     {
         Gsystem.keyControll = false;
+        console.log(Gsystem.keyControll);
+
     }
-    
 }
 
-
-function keyhandler(e)
+function keydownhandler(e)
 {
-    if(e.code === Gsystem.code_left)
+    if(e.code === Gsystem.code_right || e.code === Gsystem.code_left)
     {
-        Gsystem.keyControll = true;
+        Gsystem.keyControll=true;
         if(Gsystem.keyControll === true)
         {
-            innerT(numberText,sum(),1);
-            check(e.code,numberText.innerText);
-        }
-    }
-
-    if(e.code === Gsystem.code_right)
-    {
-        Gsystem.keyControll = true;
-        if(Gsystem.keyControll === true)
-        {
-            innerT(numberText,sum(),1);
-            check(e.code,numberText.innerText);
+            console.log(Gsystem.keyControll);
+            Gsystem.keyControll=false;
+            if(Gsystem.keyControll === false)
+            {
+                innerT(numberText,sum(),1);
+                check(e.code,numberText.innerText);
+            }
         }
     }
 }
