@@ -33,7 +33,7 @@ function innerT(element,text,code)
     }
     else
     {
-        element.innerText = `${text} 연승`;
+        element.innerText = `${text} winning`;
     }
 }
 
@@ -79,7 +79,6 @@ function check(code,num)
                 //fail
                 stop();
                 result(0);     
-                init();
             }
             break;
     }
@@ -100,14 +99,14 @@ function result(code)
     {
         numberText.style.color=gsystem.vict_color;
 
-        resultText.innerText = "승리!";
+        resultText.innerText = "VICTORY";
         resultArea.style.backgroundColor=gsystem.vict_color;
     }
     else
     {
         numberText.style.color=gsystem.fail_color;
 
-        resultText.innerText = "패배";
+        resultText.innerText = "FAIL";
         resultArea.style.backgroundColor=gsystem.fail_color;
     }
 }
