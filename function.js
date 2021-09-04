@@ -33,8 +33,7 @@ function init(cnt=0)
     gsystem.victCnt=cnt;
     gsystem.gstate='START';
 
-    innerT(numberText,0,1);
-    innerT(recordText,cnt,0);
+
 }
 
 function check(code,num)
@@ -48,11 +47,8 @@ function check(code,num)
                 console.log('실패');
                 gsystem.gstate = 'STOP';
                 console.log(gsystem.gstate);
-                if(gsystem.gstate === 'STOP' && gsystem.keyControll === 1)
-                {
-                    
-                }
-                
+                stop();
+                result(0);
             }
             break;
         case gsystem.code_right:
@@ -69,12 +65,34 @@ function check(code,num)
             {
                 //fail
                 console.log('실패');
-                    console.log(gsystem.keyControll);
-                    init();     
+                console.log(gsystem.keyControll);
+                init();     
             }
             break;
     }
 }
+
+function stop()
+{
+    if(gsystem.gstate === 'STOP')
+    {
+        innerT(numberText,gsystem.num,1);
+        innerT(recordText,gsystem.victCnt,0);
+    }
+}
+
+function result(code)
+{ 
+    if(code)
+    {
+        numberText.style.color='green';
+    }
+    else
+    {
+        numberText.style.color='red';
+    }
+}
+
 
 function sum()
 {
@@ -100,17 +118,18 @@ function keyuphandler(e)
 
 function keydownhandler(e)
 {
-    if(e.code === gsystem.code_right || e.code === gsystem.code_left)
+    if(gsystem.gstate === 'START')
     {
-        gsystem.keyControll++;
-        if(gsystem.keyControll === 1)
+        if(e.code === gsystem.code_right || e.code === gsystem.code_left)
         {
-            console.log(gsystem.keyControll);
-            innerT(numberText,sum(),1);
-            check(e.code,numberText.innerText);
+            gsystem.keyControll++;
+            if(gsystem.keyControll === 1)
+            {
+                console.log(gsystem.keyControll);
+                innerT(numberText,sum(),1);
+                check(e.code,numberText.innerText);
+            }
         }
-
-        
     }
 }
 
