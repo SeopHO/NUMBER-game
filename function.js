@@ -2,6 +2,7 @@ const numberText = document.getElementById("numberText");
 const recordText = document.getElementById("recordText");
 const resultText = document.getElementById("resultText");
 const resultArea = document.querySelector(".result-Area");
+
 window.addEventListener("keydown",keydownhandler);
 window.addEventListener("keyup",keyuphandler);
 
@@ -33,7 +34,7 @@ function innerT(element,text,code)
     }
     else
     {
-        element.innerText = `${text} winning`;
+        element.innerText = `${text} WINNING`;
     }
 }
 
