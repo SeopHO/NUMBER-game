@@ -3,11 +3,14 @@ const recordText = document.getElementById("recordText");
 const resultText = document.getElementById("resultText");
 const resultArea = document.querySelector(".result-Area");
 
+const r1Text = document.getElementById("r1Text");
+const r2Text = document.getElementById("r2Text");
+const r3Text = document.getElementById("r3Text");
+
 window.addEventListener("keydown",keydownhandler);
 window.addEventListener("keyup",keyuphandler);
 
 let ranking = new Array();
-let temp;
 
 const gsystem={
     randMax:8,
@@ -36,13 +39,6 @@ function innerT(element,text,code)
     {
         element.innerText = `${text} WINNING`;
     }
-}
-
-function makelocal()
-{
-    localStorage.setItem('rank_0',ranking[0]);
-    localStorage.setItem('rank_1',ranking[1]);
-    localStorage.setItem('rank_2',ranking[2]);
 }
 
 function init(cnt=0)
@@ -152,9 +148,19 @@ function randomhandler()
     randValue = Math.floor(Math.random()*gsystem.randMax+1);
     return randValue;
 }
+function drawRanking()
+{    
+    innerT(r1Text,ranking[0],1);
+    innerT(r2Text,ranking[1],1);
+    innerT(r3Text,ranking[2],1);
+}
 function addArray(cnt)
 {
     ranking[ranking.length] = cnt;
+    if(ranking[ranking.length-1] == 0)
+    {
+        ranking.pop();
+    }
     if(ranking.length>1)
     {
         for(let i=0;i<ranking.length-1;i++)
@@ -165,19 +171,20 @@ function addArray(cnt)
             }
         }
         sortArray();
+        
     }
+    console.log(ranking);
 }
 
 function compare(value1,value2)
 {
     if(value1<value2)
-        return -1;
-    else if(value1>value2)
         return 1;
+    else if(value1>value2)
+        return -1;
     else
         return 0;
 }
-
 function sortArray()
 {
     ranking.sort(compare);
@@ -215,6 +222,7 @@ function keydownhandler(e)
                 else
                 {
                     addArray(gsystem.victCnt);
+                    drawRanking();
                     init();
                 }
             }

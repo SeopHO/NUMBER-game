@@ -23,7 +23,6 @@ body
     align-items: flex-end;
     /* background-color: #CDBBA7; */
 }
-
 .second-Area
 {
     display: flex;
@@ -34,13 +33,16 @@ body
     width:90px;
     /* height:70px; */
     height:120px;
-
 }
 #r2Text
 {
     width:100%;
     height:50px;
-    background-color: black;  
+    /* background-color: black;   */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .box2
 {
@@ -56,8 +58,6 @@ body
     font-size: 50px;
     font-weight: bold;
 }
-
-
 .first-Area
 {
     display: flex;
@@ -68,13 +68,16 @@ body
     width:90px;
     /* height:100px; */
     height:150px;
-
 }
 #r1Text
 {
     width:100%;
     height:50px;
-    background-color: black;  
+    /* background-color: black;  */
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .box1
 {
@@ -101,7 +104,11 @@ body
 {
     width:100%;
     height:50px;
-    background-color: black;  
+    /* background-color: black;   */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .box3
 {
@@ -142,7 +149,6 @@ body
     text-align: center;
     color:#ffff;
     text-shadow: 0px 5px 0px rgba(0,0,0,0.5);
-
 }
 .number-Area
 {
