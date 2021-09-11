@@ -150,6 +150,7 @@ function randomhandler()
 }
 function drawRanking()
 {    
+    
     innerT(r1Text,ranking[0],1);
     innerT(r2Text,ranking[1],1);
     innerT(r3Text,ranking[2],1);
