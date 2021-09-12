@@ -7,10 +7,16 @@ const r1Text = document.getElementById("r1Text");
 const r2Text = document.getElementById("r2Text");
 const r3Text = document.getElementById("r3Text");
 
+let ranking = new Array();
+
+const RANK_1_LS = 'ranking_1';
+const RANK_2_LS = 'ranking_2';
+const RANK_3_LS = 'ranking_3';
+const RANK_ARR_LS = 'ranking_arr';
+const SAVECHECK_LS= 'saveCheck';
+
 window.addEventListener("keydown",keydownhandler);
 window.addEventListener("keyup",keyuphandler);
-
-let ranking = new Array();
 
 const gsystem={
     randMax:8,
@@ -27,6 +33,26 @@ const gsystem={
     contain_color:'#F4DFD0',
     vict_color:'#4FFF63',
     fail_color:'#FF3F3F',
+}
+
+function savelocal()
+{
+    console.log('saving...');
+    
+    if(ranking.length>0)
+    {
+        localStorage.setItem(RANK_ARR_LS,ranking);
+        localStorage.setItem(SAVECHECK_LS,1);   
+    }
+}
+
+function convertArray()
+{
+    let converted = Array.from(localStorage.getItem(RANK_ARR_LS));
+    let modifyconverted = Array.from(converted,e=>e*1);
+    console.log('변환완료 배열',modifyconverted);
+    
+    return modifyconverted;
 }
 
 function innerT(element,text,code)
@@ -48,14 +74,19 @@ function init(cnt=0)
     gsystem.victCnt=cnt;
     gsystem.gstate='START';
     gsystem.gresult=null;
-
     gsystem.nextControll = 0;
+
+    if(localStorage.getItem(SAVECHECK_LS) == 1)
+    {
+        ranking = convertArray();
+    }
 
     numberText.style.color=gsystem.number_color;
 
     resultArea.style.backgroundColor=gsystem.contain_color;
     resultText.innerText = " ";
 
+    drawRanking();
     innerT(numberText,0,1);
     innerT(recordText,cnt,0);
 }
@@ -150,10 +181,22 @@ function randomhandler()
 }
 function drawRanking()
 {    
-    
     innerT(r1Text,ranking[0],1);
-    innerT(r2Text,ranking[1],1);
-    innerT(r3Text,ranking[2],1);
+    // innerT(r2Text,ranking[1],1);
+    // innerT(r3Text,ranking[2],1);
+
+    if(r1Text.innerText === 'undefined')
+    {
+        r1Text.innerText = "";
+    }
+    if(r2Text.innerText === 'undefined')
+    {
+        r2Text.innerText = "";
+    }
+    if(r3Text.innerText === 'undefined')
+    {
+        r3Text.innerText = "";
+    }
 }
 function addArray(cnt)
 {
@@ -172,11 +215,8 @@ function addArray(cnt)
             }
         }
         sortArray();
-        
     }
-    console.log(ranking);
 }
-
 function compare(value1,value2)
 {
     if(value1<value2)
@@ -223,11 +263,13 @@ function keydownhandler(e)
                 else
                 {
                     addArray(gsystem.victCnt);
-                    drawRanking();
+                    savelocal();
                     init();
                 }
             }
         }
     }
 }
+
 init();
+
