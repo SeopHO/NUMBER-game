@@ -15,6 +15,7 @@ const RANK_3_LS = 'ranking_3';
 const RANK_ARR_LS = 'ranking_arr';
 const SAVECHECK_LS= 'saveCheck';
 
+
 window.addEventListener("keydown",keydownhandler);
 window.addEventListener("keyup",keyuphandler);
 
@@ -38,7 +39,6 @@ const gsystem={
 function savelocal()
 {
     console.log('saving...');
-    
     if(ranking.length>0)
     {
         localStorage.setItem(RANK_ARR_LS,ranking);
@@ -182,8 +182,8 @@ function randomhandler()
 function drawRanking()
 {    
     innerT(r1Text,ranking[0],1);
-    // innerT(r2Text,ranking[1],1);
-    // innerT(r3Text,ranking[2],1);
+    innerT(r2Text,ranking[1],1);
+    innerT(r3Text,ranking[2],1);
 
     if(r1Text.innerText === 'undefined')
     {
@@ -263,7 +263,10 @@ function keydownhandler(e)
                 else
                 {
                     addArray(gsystem.victCnt);
-                    savelocal();
+                    if(gsystem.victCnt!=0)
+                    {
+                        savelocal();                    
+                    }
                     init();
                 }
             }
