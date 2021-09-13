@@ -15,7 +15,6 @@ const RANK_3_LS = 'ranking_3';
 const RANK_ARR_LS = 'ranking_arr';
 const SAVECHECK_LS= 'saveCheck';
 
-
 window.addEventListener("keydown",keydownhandler);
 window.addEventListener("keyup",keyuphandler);
 
@@ -50,6 +49,13 @@ function convertArray()
 {
     let converted = Array.from(localStorage.getItem(RANK_ARR_LS));
     let modifyconverted = Array.from(converted,e=>e*1);
+    for(let i=0;i<modifyconverted.length;i++)
+    {
+        if(isNaN(modifyconverted[i]))
+        {
+            modifyconverted.splice(i,1);
+        }
+    }
     console.log('변환완료 배열',modifyconverted);
     
     return modifyconverted;
@@ -73,9 +79,9 @@ function init(cnt=0)
     gsystem.num = 0;
     gsystem.victCnt=cnt;
     gsystem.gstate='START';
-    gsystem.gresult=null;
+    // gsystem.gresult=null;
     gsystem.nextControll = 0;
-
+    gsystem.gresult = null;
     if(localStorage.getItem(SAVECHECK_LS) == 1)
     {
         ranking = convertArray();
@@ -85,6 +91,7 @@ function init(cnt=0)
 
     resultArea.style.backgroundColor=gsystem.contain_color;
     resultText.innerText = " ";
+
 
     drawRanking();
     innerT(numberText,0,1);
@@ -209,7 +216,7 @@ function addArray(cnt)
     {
         for(let i=0;i<ranking.length-1;i++)
         {
-            if(ranking[i] === ranking[ranking.length-1])
+            if(ranking[i] == ranking[ranking.length-1])
             {
                 ranking.pop();
             }
